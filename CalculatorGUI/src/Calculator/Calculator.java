@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+// Created by MJ
 public class Calculator {
 	private JFrame frame;
 	private static JTextField textfield;
@@ -21,7 +23,6 @@ public class Calculator {
 	private static String clear = "C";
 	private static String equal = "=";
 	private static String acceptedChars = "0123456789.+-*/=";
-    
 	public Calculator() {
 		initialize();
 	}
@@ -29,57 +30,51 @@ public class Calculator {
 	public void initialize() {
 		frame = new JFrame("Calculator");
 		frame.setSize(340, 600);
-		frame.setLayout(null);
 		textfield = new JTextField();
-		textfield.setBounds(60, 10, 200, 50);
+		textfield.setLayout(new BorderLayout());
+		textfield.setPreferredSize(new Dimension(100, 50));
+		
 
 		// Add all buttons
 		ArrayList<JButton> buttons = buttons();
-		
-		
-
-		
-        
-		panel = new JPanel(new GridLayout(0, 4));
-		panel.setBounds(35, 100, 250, 400);
+		panel = new JPanel(new GridLayout(5, 4));
 		
 		for (JButton b : buttons) {
 			b.setFocusable(false);
-			panel.add(b);
-		}
 
+			panel.add(b);	
+		}
+		
+				
 		buttonClicked(buttons, textfield);
 		keyTyped(textfield);
 		enterClicked(textfield);		
-		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
-		frame.add(panel);
-		frame.add(textfield);
+		frame.add(textfield, BorderLayout.NORTH);
+		frame.add(panel, BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
 	
 	public static ArrayList<JButton> buttons() {
 		ArrayList<JButton> buttons = new ArrayList<>();
 		
+		
 		buttons.add(new JButton(String.valueOf(1)));
 		buttons.add(new JButton(String.valueOf(2)));
 		buttons.add(new JButton(String.valueOf(3)));
-		buttons.add(new JButton(div));
+		buttons.add(new JButton(plus));
 		buttons.add(new JButton(String.valueOf(4)));
 		buttons.add(new JButton(String.valueOf(5)));
 		buttons.add(new JButton(String.valueOf(6)));
-		buttons.add(new JButton(mult));
+		buttons.add(new JButton(minus));
 		buttons.add(new JButton(String.valueOf(7)));
 		buttons.add(new JButton(String.valueOf(8)));
 		buttons.add(new JButton(String.valueOf(9)));
-		buttons.add(new JButton(minus));
+		buttons.add(new JButton(mult));
 		buttons.add(new JButton(dot));
 		buttons.add(new JButton(String.valueOf(0)));
 		buttons.add(new JButton(equal));
-		buttons.add(new JButton(plus));
+		buttons.add(new JButton(div));
 		buttons.add(new JButton(clear));
 
 		return buttons;
@@ -155,23 +150,30 @@ public class Calculator {
 		} else if (operator.equals(minus)) {
 			result = operand1 - operand2;
 		} else if (operator.equals(div)) {
-			result = operand1 / operand2;
+			if (operand2 != 0) {
+				result = operand1 / operand2;
+			} else {
+				canDivide = false;
+			}
 		} else if (operator.equals(mult)) {
 			result = operand1 * operand2;
 		} 
 		
-		if (String.valueOf(result).equals("inifinity")) {
+		if (canDivide == true) {
 			if (result == (int) result) {
-			textfield.setText(Integer.toString((int) result));
-			} else {
-				textfield.setText(String.valueOf(result));
-			}
-			numbers.clear();
+				textfield.setText(Integer.toString((int) result));
+				} else {
+					textfield.setText(String.valueOf(result));
+				}
+				numbers.clear();
 		} else {
 			textfield.setText("Cannot divide by zero");
+			numbers.clear();
+
 		}
 		
 		
+		 
 			
 	}
 	
